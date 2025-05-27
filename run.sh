@@ -1,0 +1,2 @@
+pip install streamlit python-docx pdfplumber pydantic python-dotenv langchain langchain_core langchain_community langchain_ollama
+python -m streamlit run app.py --server.port 8000 --server.address 0.0.0.0

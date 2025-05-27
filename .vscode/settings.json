@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/c490b253-3460-4e3d-a115-cacd2fa02529/resourceGroups/Mis_Analytics_A2-I-T85829/providers/Microsoft.Web/sites/ResumeParserv1",
+    "appService.deploySubpath": "."
+}
