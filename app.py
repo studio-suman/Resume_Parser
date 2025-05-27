@@ -147,8 +147,8 @@ def option_three(parsed_result):
 # Image layout options
 images = [
     ("Kallisti", "./New folder/Layout1.png", option_one),
-    ("Phaedon", "././New folder/Layout2.png", option_two),
-    ("Erasmos", "././New folder/Layout3.png", option_three),
+    ("Phaedon", "./New folder/Layout2.png", option_two),
+    ("Erasmos", "./New folder/Layout3.png", option_three),
 ]
  
 # Streamlit UI
