@@ -146,7 +146,7 @@ def option_three(parsed_result):
  
 # Image layout options
 images = [
-    ("Kallisti", "./Layout1.png", option_one),
+    ("Kallisti", "./New folder/Layout1.png", option_one),
     ("Phaedon", "./Layout2.png", option_two),
     ("Erasmos", "./Layout3.png", option_three),
 ]
