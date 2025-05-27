@@ -10,7 +10,7 @@ from docx.shared import Inches
 from docx.shared import Pt, RGBColor
  
  
-# Configure logging
+# Configure logging to enabled
 logging.basicConfig(filename='resume_generator.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
  
 def add_horizontal_line(paragraph):
