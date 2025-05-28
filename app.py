@@ -154,6 +154,8 @@ images = [
 ]
  
 # Streamlit UI
+
+st.set_page_config(page_title='Resume Parser', initial_sidebar_state = 'auto')
 st.markdown("<h1 style='font-size: 30px;color:#4F81BD;'>Resume Parser📄</h1>", unsafe_allow_html=True)
 st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Upload your resume</h8>", unsafe_allow_html=True)
 uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"])
