@@ -13,7 +13,7 @@ from docx.shared import Pt, RGBColor
 # Configure logging to enabled
 logging.basicConfig(filename='resume_generator.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
  
-def add_horizontal_line(paragraph):
+def add_horizontal_line(paragraph): 
     p = paragraph._p
     pPr = p.get_or_add_pPr()
     pBdr = OxmlElement('w:pBdr')
@@ -24,7 +24,29 @@ def add_horizontal_line(paragraph):
     bottom.set(qn('w:color'), '000000')
     pBdr.append(bottom)
     pPr.append(pBdr)
+
+
+def set_cell_background(cell, color):
+    tc = cell._tc
+    tcPr = tc.get_or_add_tcPr()
+    shd = OxmlElement('w:shd')
+    shd.set(qn('w:fill'), color) # Hex color code, e.g., 'D9E1F2' for light blue
+    tcPr.append(shd)
+varR1=0x4F
+varG1=0x81
+varB1=0xBD
+varR2=0x17
+varG2=0x36
+varB2=0x5D
+
  
+def add_horizontal_divider(doc, text="────────────"):
+    para = doc.add_paragraph(text)
+    para.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    run = para.runs[0]
+    run.bold = True
+ 
+
 def layout1(parsed_result, path):
     try:
         if not os.path.exists(path):
@@ -150,6 +172,7 @@ def layout2(parsed_result, path):
         # LEFT SIDEBAR
         name_para = left_cell.paragraphs[0]
         name_para.add_run(data.get("Name", "Unnamed")).bold = True
+        name_para.runs[0].font.color.rgb = RGBColor(varR1,varG1, varB1) # Default black color
         name_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
  
         contact_info = [
@@ -205,13 +228,7 @@ def layout2(parsed_result, path):
         logging.error(f"An error occurred while generating layout 2 resume: {e}")
         return None
  
- 
-def add_horizontal_divider(doc, text="────────────"):
-    para = doc.add_paragraph(text)
-    para.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    run = para.runs[0]
-    run.bold = True
- 
+
 def layout4(parsed_result, path):
     try:
         if not os.path.exists(path):
@@ -314,20 +331,7 @@ def layout4(parsed_result, path):
         logging.error(f"An error occurred while generating the resume: {e}")
         return None
  
- 
-def set_cell_background(cell, color):
-    tc = cell._tc
-    tcPr = tc.get_or_add_tcPr()
-    shd = OxmlElement('w:shd')
-    shd.set(qn('w:fill'), color) # Hex color code, e.g., 'D9E1F2' for light blue
-    tcPr.append(shd)
-varR1=0x4F
-varG1=0x81
-varB1=0xBD
-varR2=0x17
-varG2=0x36
-varB2=0x5D
- 
+  
 def layout3(parsed_result, path):
     try:
         if not os.path.exists(path):
