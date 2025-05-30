@@ -172,8 +172,9 @@ def layout2(parsed_result, path):
         # LEFT SIDEBAR
         name_para = left_cell.paragraphs[0]
         name_para.add_run(data.get("Name", "Unnamed")).bold = True
+        name_para.runs[0].font.size = Pt(14)
         name_para.runs[0].font.color.rgb = RGBColor(varR1,varG1, varB1) # Default black color
-        name_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        name_para.alignment = WD_ALIGN_PARAGRAPH.LEFT
  
         contact_info = [
             data.get("Email", ""),
@@ -185,24 +186,45 @@ def layout2(parsed_result, path):
             left_cell.add_paragraph(info)
  
         if data.get("Skills"):
-            left_cell.add_paragraph("Skills").bold = True # type: ignore
+            heading = left_cell.add_paragraph("Skills")
+            heading.runs[0].bold = True
+            heading.runs[0].add_break(break_type=WD_BREAK.LINE)
+            heading.runs[0].add_text(text = "────────────")
+            heading.runs[0].font.size = Pt(14)
+            heading.runs[0].font.color.rgb= RGBColor(varR2, varG2, varB2)
+            #type: ignore
             for skill in data.get("Skills", []):
                 left_cell.add_paragraph(skill, style='List Bullet')
  
         # RIGHT MAIN SECTION
         if data.get("Summary"):
-            right_cell.add_paragraph("Summary").bold = True # type: ignore
+            heading = right_cell.add_paragraph("Summary")
+            heading.runs[0].bold = True
+            heading.runs[0].add_break(break_type=WD_BREAK.LINE)
+            heading.runs[0].add_text(text = "────────────")
+            heading.runs[0].font.size = Pt(14)
+            heading.runs[0].font.color.rgb= RGBColor(varR2, varG2, varB2)
             right_cell.add_paragraph(data["Summary"])
  
         if data.get("Education"):
-            right_cell.add_paragraph("Education").bold = True # type: ignore
+            heading = right_cell.add_paragraph("Education")
+            heading.runs[0].bold = True
+            heading.runs[0].add_break(break_type=WD_BREAK.LINE)
+            heading.runs[0].add_text(text = "────────────")
+            heading.runs[0].font.size = Pt(14)
+            heading.runs[0].font.color.rgb= RGBColor(varR2, varG2, varB2)
             for edu in data.get("Education", []):
                 p = right_cell.add_paragraph()
                 p.add_run(f"{edu.get('Degree', '')} in {edu.get('Field', '')}").bold = True
                 p.add_run(f"\n{edu.get('Institution', '')}")
  
         if data.get("Experience"):
-            right_cell.add_paragraph("Experience").bold = True # type: ignore
+            heading = right_cell.add_paragraph("Experience")
+            heading.runs[0].bold = True
+            heading.runs[0].add_break(break_type=WD_BREAK.LINE)
+            heading.runs[0].add_text(text = "────────────")
+            heading.runs[0].font.size = Pt(14)
+            heading.runs[0].font.color.rgb= RGBColor(varR2, varG2, varB2)
             for exp in data.get("Experience", []):
                 p = right_cell.add_paragraph()
                 p.add_run(exp.get("Title", "")).bold = True

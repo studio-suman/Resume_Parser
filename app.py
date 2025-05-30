@@ -5,6 +5,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
+import logging
 import pdfplumber
 import json
 import os
@@ -13,6 +14,9 @@ from pydantic import BaseModel
 from typing import List
 from langchain.prompts import PromptTemplate
 from LLMLab45 import LlamaLLM  # Your custom LLM wrapper
+
+# Configure logging to enabled
+logging.basicConfig(filename='resume_generator.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
  
 # Define the Pydantic model for structured output
 class Resume(BaseModel):
@@ -84,7 +88,8 @@ def read_resume(uploaded_file):
         else:
             raise ValueError("Unsupported file type")
     except Exception as e:
-        st.error(f"Error reading resume: {e}")
+        logging.error(f"Error reading resume: {e}")
+        st.error("Please try to upload again")
         return None
  
 def parse_resume(resume_text):
@@ -105,7 +110,8 @@ def parse_resume(resume_text):
  
         return parsed_resume
     except Exception as e:
-        st.error(f"Error parsing resume: {e}")
+        logging.error(f"Error parsing resume: {e}")
+        st.error("Please try to upload again")
         return None
  
 # ... [imports and initial setup remain unchanged] ...
@@ -129,9 +135,11 @@ def generate_and_offer_download(parsed_result, layout_function):
                 )
             #st.success("Resume generated and ready for download!")
         else:
-            st.error("Failed to generate resume. Please check the logs or try again.")
+            logging.error("Failed to generate resume. Please check the logs or try again.")
+            st.error("Please try to upload again")
     except Exception as e:
-        st.error(f"Error generating or downloading resume: {e}")
+        logging.error(f"Error generating or downloading resume: {e}")
+        st.error("Please try to upload again")
  
 # Layout selection functions
 def option_one(parsed_result):
@@ -169,19 +177,23 @@ if uploaded_file is not None:
             parsed_result = parse_resume(resume_text)
  
 if parsed_result:
+    #st.json(parsed_result)
     if isinstance(parsed_result, str):
         try:
             parsed_result = json.loads(parsed_result)
         except json.JSONDecodeError as e:
-            st.error(f"Failed to decode parsed result: {e}")
+            logging.error(f"Failed to decode parsed result: {e}")
+            st.error("Please try to upload again")
             st.stop()
  
     if not isinstance(parsed_result, dict):
-        st.error("Parsed result is not a dictionary. Cannot proceed.")
+        logging.error("Parsed result is not a dictionary. Cannot proceed.")
+        st.error("Please try to upload again")
         st.stop()
  
     if 'Name' not in parsed_result:
-        st.error("The 'Name' field is missing in the parsed result.")
+        logging.error("The 'Name' field is missing in the parsed result.")
+        st.error("Please try to upload again")
         st.stop()
  
     # Layout selection UI
