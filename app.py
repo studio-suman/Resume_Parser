@@ -77,7 +77,19 @@ def read_resume(uploaded_file):
             return uploaded_file.read().decode("utf-8")
         elif uploaded_file.type == "application/pdf":
             with pdfplumber.open(uploaded_file) as pdf:
-                return "".join([page.extract_text() for page in pdf.pages if page.extract_text()])
+                #return "".join([page.extract_text() for page in pdf.pages if page.extract_text()])
+                text = ""
+                for page in pdf.pages:
+                    # Extract regular text
+                    if page.extract_text():
+                        text += page.extract_text() + "\n"
+ 
+                    # Extract tables
+                    tables = page.extract_tables()
+                    for table in tables:
+                        for row in table:
+                            text += "\t".join(cell if cell else "" for cell in row) + "\n"
+            return text
         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             doc = Document(uploaded_file)
             return "\n".join([paragraph.text for paragraph in doc.paragraphs])
@@ -94,16 +106,24 @@ def parse_resume(resume_text):
             user="user"
         )
         formatted_prompt = prompt_template.format(resume_text=summarised_text)
-        parsed_resume = llm._call(prompt=formatted_prompt, user="user")
+        parsed_response = llm._call(prompt=formatted_prompt, user="user")
         #st.write(parsed_resume)
  
-        if isinstance(parsed_resume, str):
-            parsed_resume = json.loads(parsed_resume)
- 
-        if isinstance(parsed_resume, dict) and "data" in parsed_resume and "content" in parsed_resume["data"]:
-            parsed_resume = parsed_resume["data"]["content"]
- 
-        return parsed_resume
+        if isinstance(parsed_response, dict) and "data" in parsed_response and "content" in parsed_response["data"]: # type: ignore
+            parsed_text = parsed_response["data"]["content"] # type: ignore
+        else:
+            parsed_text = parsed_response
+
+        if isinstance(parsed_text, str):
+            parsed_text = parsed_text.strip()
+            if parsed_text.startswith("```json"):
+                parsed_text = parsed_text.replace("```json", "").strip()
+            if parsed_text.endswith("```"):
+                parsed_text = parsed_text.replace("```", "").strip()
+                print(type(parsed_text))
+            parsed_resume = json.loads(parsed_text)
+            
+            return parsed_resume
     except Exception as e:
         st.error(f"Error parsing resume: {e}")
         return None
