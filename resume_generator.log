@@ -1,0 +1,6 @@
+2025-05-30 13:04:31,028:ERROR:An error occurred while generating layout 2 resume: 'str' object has no attribute 'get'
+2025-05-30 13:12:25,441:ERROR:An error occurred while generating the resume: 'str' object has no attribute 'get'
+2025-05-30 14:04:18,770:ERROR:Failed to decode parsed result: Expecting value: line 1 column 1 (char 0)
+2025-05-30 14:05:02,679:ERROR:An error occurred while generating layout 2 resume: 'str' object has no attribute 'get'
+2025-05-30 14:06:51,743:ERROR:An error occurred while generating layout 2 resume: 'str' object has no attribute 'get'
+2025-05-30 14:06:51,744:ERROR:Failed to generate resume. Please check the logs or try again.
