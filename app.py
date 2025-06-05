@@ -98,7 +98,8 @@ def read_resume(uploaded_file):
     except Exception as e:
         st.error(f"Error reading resume: {e}")
         return None
- 
+
+#New Code 
 def parse_resume(resume_text):
     try:
         summarised_text = llm._call(
