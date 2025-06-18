@@ -7,3 +7,5 @@
 2025-06-18 09:25:20,114:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
 2025-06-18 09:26:59,811:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
 2025-06-18 09:28:47,324:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
+2025-06-18 16:47:48,629:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)
+2025-06-18 16:48:21,698:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)

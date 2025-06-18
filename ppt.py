@@ -255,7 +255,7 @@ def ppt_call():
     # Streamlit UI
     #st.markdown("<h1 style='font-size: 30px;color:#4F81BD;'>Resume Parser📄</h1>", unsafe_allow_html=True)
     st.markdown("<h8 style='font-size: 16px;'>Upload your resume</h8>", unsafe_allow_html=True)
-    uploaded_files = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"], accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Upload your resume", label_visibility="collapsed", type=[ "pdf", "docx"], accept_multiple_files=True)
     
     #parsed_result = None
     #Enabled multi-upload

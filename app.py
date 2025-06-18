@@ -194,9 +194,11 @@ user = User(username="admin", password="password123")
 
 # Recruit Agent
 def show_recruit_agent():
-        st.markdown("<h1 style='font-size: 30px;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
+        st.markdown("### 📄 Recruitment Agent")
+        st.write("Generate a structured profile using the selected layout for a given profile.")
+        #st.markdown("<h1 style='font-size: 30px;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
         st.markdown("<h8 style='font-size: 16px;'>Upload your resume</h8>", unsafe_allow_html=True)
-        uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"])
+        uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["pdf", "docx"])
     
         parsed_result = None
         
@@ -239,7 +241,7 @@ def show_recruit_agent():
 # Sales Agent
 def show_sales_agent():
         st.markdown("### 📈 Sales Agent Page")
-        st.write("This page will help you manage sales-related tasks and information.")
+        st.write("Generate a one-slide PowerPoint presentation for the given profile.")
         ppt.ppt_call()
 
 # Admin Page
@@ -294,7 +296,7 @@ def show_welcome_page():
     #st.sidebar.info("Use this panel to navigate or view instructions.")
     st.sidebar.markdown("### 🔍 Instructions")
     st.sidebar.write("""
-    1. Upload your resume in PDF, DOCX, or TXT format.
+    1. Upload your resume in PDF, DOCX format.
     2. Wait for the resume to be parsed.
     3. Choose your preferred layout.
     4. Download the generated resume.
@@ -327,7 +329,7 @@ if 'logged_in' not in st.session_state:
 if 'username' not in st.session_state:
        st.session_state.username = ""
 if 'users' not in st.session_state:
-       st.session_state.users = {"admin": "password123", "kk": "password123"}   # Default admin user
+       st.session_state.users = {"admin": "password123", "krishnakanth": "password123", "manish": "password123"}   # Default admin user
 if 'tokens' not in st.session_state:
        st.session_state.tokens = []
 
