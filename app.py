@@ -313,8 +313,8 @@ def show_login_page():
             if user_name in st.session_state.users and st.session_state.users[user_name] == pass_word:
                 st.session_state.logged_in = True
                 st.session_state.username = user_name
-                if st.session_state.logged_in:
-                    show_welcome_page()
+                # if st.session_state.logged_in:
+                #     show_welcome_page()
             else:
                 st.error("Invalid username or password")
 
