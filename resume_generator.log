@@ -4,3 +4,6 @@
 2025-05-30 14:05:02,679:ERROR:An error occurred while generating layout 2 resume: 'str' object has no attribute 'get'
 2025-05-30 14:06:51,743:ERROR:An error occurred while generating layout 2 resume: 'str' object has no attribute 'get'
 2025-05-30 14:06:51,744:ERROR:Failed to generate resume. Please check the logs or try again.
+2025-06-18 09:25:20,114:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
+2025-06-18 09:26:59,811:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
+2025-06-18 09:28:47,324:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query

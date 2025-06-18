@@ -19,6 +19,7 @@ parser = StrOutputParser()
 load_dotenv()
 
 
+
 class LlamaLLM(LLM):
     llm_url: ClassVar[str] = 'https://api.lab45.ai/v1.1/skills/completion/query'
     
@@ -27,7 +28,7 @@ class LlamaLLM(LLM):
     def _llm_type(self) -> str:
         return "gpt-35-turbo-16k"
     
-    def _call(
+    def _call( # type: ignore
         self,
         prompt: str,
         user: str,
@@ -53,6 +54,9 @@ class LlamaLLM(LLM):
         },
         "stream_response": False
         }
+        token2 = os.environ['TOKEN']
+        if token2 is None:
+            raise ValueError("TOKEN environment variable is not set.")
         #os.environ["TOKEN"] = "Bearer token|1f9b0b2b-dcb7-4e85-aec3-5a04a5eb25ab|84585ddcc6f8fc5a6872c417e46de733525ba1bc8b0376f69b56e4b0257df6da"
         token = os.getenv("TOKEN")
         print(token)

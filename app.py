@@ -1,5 +1,6 @@
 #Final Version Ready for Deployment v2.1 27 May 2025
 
+from click import password_option
 import streamlit as st
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -10,7 +11,7 @@ import pdfplumber
 import json
 import os
 from generate_resume import layout3, layout1, layout2
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List
 from langchain.prompts import PromptTemplate
 from LLMLab45 import LlamaLLM  # Your custom LLM wrapper
@@ -29,7 +30,12 @@ class Resume(BaseModel):
     certifications: List[str]
     experience: List[dict]
     education: List[dict]
- 
+
+class User(BaseModel):
+    username: str
+    password: str
+
+    
 # Prompt template for resume parsing
 prompt_template = PromptTemplate(
     input_variables=["resume_text"],
@@ -181,48 +187,110 @@ images = [
     ("Phaedon", "./New folder/Layout2.png", option_two),
     ("Erasmos", "./New folder/Layout3.png", option_three),
 ]
- 
+
+user = User(username="admin", password="password123")
+
 # Streamlit UI
 
-st.set_page_config(page_title='Resume Parser', initial_sidebar_state = 'auto')
-st.markdown("<h1 style='font-size: 30px;color:#4F81BD;'>Resume Parser📄</h1>", unsafe_allow_html=True)
-st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Upload your resume</h8>", unsafe_allow_html=True)
-uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"])
- 
-parsed_result = None
- 
-if uploaded_file is not None:
-    with st.spinner("Reading and parsing resume..."):
-        resume_text = read_resume(uploaded_file)
-        if resume_text:
-            parsed_result = parse_resume(resume_text)
- 
-if parsed_result:
-    #st.json(parsed_result)
-    if isinstance(parsed_result, str):
-        try:
-            parsed_result = json.loads(parsed_result)
-        except json.JSONDecodeError as e:
-            logging.error(f"Failed to decode parsed result: {e}")
-            st.error("Please try to upload again")
-            st.stop()
- 
-    if not isinstance(parsed_result, dict):
-        logging.error("Parsed result is not a dictionary. Cannot proceed.")
-        st.error("Please try to upload again")
-        st.stop()
- 
-    if 'Name' not in parsed_result:
-        logging.error("The 'Name' field is missing in the parsed result.")
-        st.error("Please try to upload again")
-        st.stop()
- 
-    # Layout selection UI
-    st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-    cols = st.columns(3, vertical_alignment="center")
-    for i, (title, img_path, func) in enumerate(images):
-        with cols[i]:
-            st.image(img_path, use_container_width=False)
-            if st.button(f"Layout: {title}", use_container_width=True):
-                func(parsed_result)
- 
+st.set_page_config(page_title='TalentStream Pro', initial_sidebar_state = 'auto')
+
+# Initialize session state variables
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+
+def show_login_page():
+    st.title("Login Page")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username == user.username and password == user.password:
+            st.session_state.logged_in = True
+            st.success("Login successful!")
+        else:
+            st.error("Invalid username or password")
+
+def show_recruit_agent():
+        st.markdown("<h1 style='font-size: 30px;color:#4F81BD;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
+        st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Upload your resume</h8>", unsafe_allow_html=True)
+        uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"])
+    
+        parsed_result = None
+        
+        if uploaded_file is not None:
+            with st.spinner("Reading and parsing resume..."):
+                resume_text = read_resume(uploaded_file)
+                if resume_text:
+                    parsed_result = parse_resume(resume_text)
+        
+        if parsed_result:
+            #st.json(parsed_result)
+            if isinstance(parsed_result, str):
+                try:
+                    parsed_result = json.loads(parsed_result)
+                except json.JSONDecodeError as e:
+                    logging.error(f"Failed to decode parsed result: {e}")
+                    st.error("Please try to upload again")
+                    st.stop()
+        
+            if not isinstance(parsed_result, dict):
+                logging.error("Parsed result is not a dictionary. Cannot proceed.")
+                st.error("Please try to upload again")
+                st.stop()
+        
+            if 'Name' not in parsed_result:
+                logging.error("The 'Name' field is missing in the parsed result.")
+                st.error("Please try to upload again")
+                st.stop()
+        
+            # Layout selection UI
+            st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Choose a Layout:</h8>", unsafe_allow_html=True)
+            cols = st.columns(3, vertical_alignment="center")
+            for i, (title, img_path, func) in enumerate(images):
+                with cols[i]:
+                    st.image(img_path, use_container_width=False)
+                    if st.button(f"Layout: {title}", use_container_width=True):
+                        func(parsed_result)
+
+def show_sales_agent():
+        st.markdown("### 📈 Sales Agent Page")
+        st.write("This page will help you manage sales-related tasks and information.")
+
+# Page 2: Welcome
+def show_welcome_page():
+    
+    st.sidebar.markdown("## 📋 Navigation")
+    page = st.sidebar.radio("Go to", ["Welcome Page", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)"])
+    # Page Routing
+    if page == "Welcome Page":
+        st.markdown("### 👋 Welcome to LLM - Powered TalentStream Pro!")
+        st.write("This app parses resumes using LLMs and generates formatted documents")
+    elif page == "Recruitment Agent":
+        show_recruit_agent()
+    elif page == "Sales Agent":
+        show_sales_agent()
+    elif page == "Build Your Resume(WIP)":
+        st.markdown("### 📝 Build Your Resume")
+        st.write("This feature will allow you to create a resume from scratch.")
+    
+    #st.sidebar.info("Use this panel to navigate or view instructions.")
+    st.sidebar.markdown("### 🔍 Instructions")
+    st.sidebar.write("""
+    1. Upload your resume in PDF, DOCX, or TXT format.
+    2. Wait for the resume to be parsed.
+    3. Choose your preferred layout.
+    4. Download the generated resume.
+    """)
+    st.sidebar.markdown("### 👤 Logged in as: `admin`")   
+
+# Display appropriate page
+if st.session_state.logged_in:
+    show_welcome_page()
+else:
+    show_login_page()
+
+
+
+
+
+
+
