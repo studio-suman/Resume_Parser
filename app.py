@@ -36,7 +36,6 @@ class User(BaseModel):
     username: str
     password: str
 
-    
 # Prompt template for resume parsing
 prompt_template = PromptTemplate(
     input_variables=["resume_text"],
@@ -271,15 +270,17 @@ def show_admin_page():
        st.write(f"- {token}")
 
    if st.button("Back to Welcome Page"):
-       st.session_state.page = "welcome"
+       st.session_state.page = "Welcome Page"
 
 # Welcome page
-def show_welcome_page():
-    
+def show_welcome_page():  
+    if st.session_state.page == "Welcome":
+        st.session_state.page = "Welcome"
     st.sidebar.markdown("## 📋 Navigation")
-    page = st.sidebar.radio("Go to", ["Welcome Page", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)","Admin Page"])
+    page = st.sidebar.radio("Go to", ["Welcome", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)","Admin"])
     # Page Routing
-    if page == "Welcome Page":
+    if page == "Welcome":
+        st.session_state.page = "Welcome"
         st.markdown("### 👋 Welcome to LLM - Powered TalentStream Pro!")
         st.markdown(
         "<br> <br> A cutting-edge solution using advanced LLM technology to automate resume extraction and streamline document formatting for recruitment and sales support. <br> The system offers three predefined document formats, ensuring consistency and efficiency for agents. It also supports sales teams in creating one-slide PowerPoint presentations for RFPs. <br> In an upcoming enhancement, users will have the option to upload custom templates for automatic conversion of resumes. TalentStream Pro revolutionizes recruitment and sales processes, enhancing overall efficiency and consistency.",unsafe_allow_html=True)
@@ -290,7 +291,8 @@ def show_welcome_page():
     elif page == "Build Your Resume(WIP)":
         st.markdown("### 📝 Build Your Resume")
         st.write("This feature will allow you to create a resume from scratch.")
-    elif page == "Admin Page":
+    elif page == "Admin":
+        st.session_state.page = "Admin"
         show_admin_page()
     
     #st.sidebar.info("Use this panel to navigate or view instructions.")
@@ -315,8 +317,7 @@ def show_login_page():
             if user_name in st.session_state.users and st.session_state.users[user_name] == pass_word:
                 st.session_state.logged_in = True
                 st.session_state.username = user_name
-                # if st.session_state.logged_in:
-                #     show_welcome_page()
+                st.session_state.page = "Welcome"
             else:
                 st.error("Invalid username or password")
 
@@ -332,6 +333,10 @@ if 'users' not in st.session_state:
        st.session_state.users = {"admin": "password123", "krishnakanth": "password123", "manish": "password123"}   # Default admin user
 if 'tokens' not in st.session_state:
        st.session_state.tokens = []
+
+if "page" not in st.session_state:
+       st.session_state.page = "Welcome"
+
 
 # Display appropriate page
 if st.session_state.logged_in:
