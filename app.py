@@ -1,4 +1,4 @@
-#Final Version Ready for Deployment v2.1 27 May 2025
+#Final Version Ready for Deployment v5.1 18 June 2025
 
 from click import password_option
 import streamlit as st
@@ -181,7 +181,9 @@ def option_two(parsed_result):
 def option_three(parsed_result):
     st.success("Layout 3 selected!")
     generate_and_offer_download(parsed_result, layout3)  # Replace with layout3 if different
- 
+
+
+
 # Image layout options
 images = [
     ("Kallisti", "./New folder/Layout1.png", option_one),
@@ -191,29 +193,7 @@ images = [
 
 user = User(username="admin", password="password123")
 
-# Streamlit UI
-
-st.set_page_config(page_title='TalentStream Pro', initial_sidebar_state = 'auto')
-
-# Initialize session state variables
-if 'logged_in' not in st.session_state:
-    st.session_state.logged_in = False
-
-def show_login_page():
-    col1, col2, col3 = st.columns([1, 2, 1])  # Center the input box
-
-    with col2:
-        st.markdown("#### Welcome to TalentStream Pro")
-        username = st.text_input("Username", key="username")
-        password = st.text_input("Password", type="password", key="password")
-
-        if st.button("Login"):
-            if username == user.username and password == user.password:
-                st.session_state.logged_in = True
-                st.success("Login successful!")
-            else:
-                st.error("Invalid username or password")
-
+# Recruit Agent
 def show_recruit_agent():
         st.markdown("<h1 style='font-size: 30px;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
         st.markdown("<h8 style='font-size: 16px;'>Upload your resume</h8>", unsafe_allow_html=True)
@@ -256,16 +236,46 @@ def show_recruit_agent():
                     if st.button(f"Layout: {title}", use_container_width=True):
                         func(parsed_result)
 
+# Sales Agent
 def show_sales_agent():
         st.markdown("### 📈 Sales Agent Page")
         st.write("This page will help you manage sales-related tasks and information.")
         ppt.ppt_call()
 
-# Page 2: Welcome
+# Admin Page
+def show_admin_page():
+   st.title("Admin Page")
+   st.subheader("Add New User")
+   new_username = st.text_input("New Username", key="new_username")
+   new_password = st.text_input("New Password", type="password", key="new_password")
+   if st.button("Add User"):
+       if new_username and new_password:
+           st.session_state.users[new_username] = new_password
+           st.success(f"User '{new_username}' added successfully.")
+       else:
+           st.error("Please enter both username and password.")
+
+   st.subheader("Add Token")
+   new_token = st.text_input("New Token", key="new_token")
+   if st.button("Add Token"):
+       if new_token:
+           st.session_state.tokens.append(new_token)
+           st.success("Token added successfully.")
+       else:
+           st.error("Please enter a token.")
+
+   st.write("Current Tokens:")
+   for token in st.session_state.tokens:
+       st.write(f"- {token}")
+
+   if st.button("Back to Welcome Page"):
+       st.session_state.page = "welcome"
+
+
 def show_welcome_page():
     
     st.sidebar.markdown("## 📋 Navigation")
-    page = st.sidebar.radio("Go to", ["Welcome Page", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)"])
+    page = st.sidebar.radio("Go to", ["Welcome Page", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)","Admin Page"])
     # Page Routing
     if page == "Welcome Page":
         st.markdown("### 👋 Welcome to LLM - Powered TalentStream Pro!")
@@ -278,6 +288,8 @@ def show_welcome_page():
     elif page == "Build Your Resume(WIP)":
         st.markdown("### 📝 Build Your Resume")
         st.write("This feature will allow you to create a resume from scratch.")
+    elif page == "Admin Page":
+        show_admin_page()
     
     #st.sidebar.info("Use this panel to navigate or view instructions.")
     st.sidebar.markdown("### 🔍 Instructions")
@@ -288,6 +300,36 @@ def show_welcome_page():
     4. Download the generated resume.
     """)
     st.sidebar.markdown("### 👤 Logged in as: `admin`")   
+
+def show_login_page():
+    col1, col2, col3 = st.columns([1, 2, 1])  # Center the input box
+
+    with col2:
+        st.markdown("#### Welcome to TalentStream Pro")
+        user_name = st.text_input("Username", key="user_name")
+        pass_word = st.text_input("Password", type="password", key="pass_word")
+
+        if st.button("Login"):
+            if user_name in st.session_state.users and st.session_state.users[user_name] == pass_word:
+                st.session_state.logged_in = True
+                st.session_state.username = user_name
+                if st.session_state.logged_in:
+                    show_welcome_page()
+            else:
+                st.error("Invalid username or password")
+
+# Streamlit UI
+st.set_page_config(page_title='TalentStream Pro', initial_sidebar_state = 'auto')
+
+# Initialize session state variables
+if 'logged_in' not in st.session_state:
+       st.session_state.logged_in = False
+if 'username' not in st.session_state:
+       st.session_state.username = ""
+if 'users' not in st.session_state:
+       st.session_state.users = {"admin": "password123"}   # Default admin user
+if 'tokens' not in st.session_state:
+       st.session_state.tokens = []
 
 # Display appropriate page
 if st.session_state.logged_in:
