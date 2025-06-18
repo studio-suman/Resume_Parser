@@ -10,7 +10,8 @@ import logging
 import pdfplumber
 import json
 import os
-from generate_resume import layout3, layout1, layout2
+from generate_resume import layout3, layout1, layout2 # docx templates for different layouts
+import ppt
 from pydantic import BaseModel, EmailStr
 from typing import List
 from langchain.prompts import PromptTemplate
@@ -199,19 +200,23 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 def show_login_page():
-    st.title("Login Page")
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    if st.button("Login"):
-        if username == user.username and password == user.password:
-            st.session_state.logged_in = True
-            st.success("Login successful!")
-        else:
-            st.error("Invalid username or password")
+    col1, col2, col3 = st.columns([1, 2, 1])  # Center the input box
+
+    with col2:
+        st.markdown("#### Welcome to TalentStream Pro")
+        username = st.text_input("Username", key="username")
+        password = st.text_input("Password", type="password", key="password")
+
+        if st.button("Login"):
+            if username == user.username and password == user.password:
+                st.session_state.logged_in = True
+                st.success("Login successful!")
+            else:
+                st.error("Invalid username or password")
 
 def show_recruit_agent():
-        st.markdown("<h1 style='font-size: 30px;color:#4F81BD;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
-        st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Upload your resume</h8>", unsafe_allow_html=True)
+        st.markdown("<h1 style='font-size: 30px;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
+        st.markdown("<h8 style='font-size: 16px;'>Upload your resume</h8>", unsafe_allow_html=True)
         uploaded_file = st.file_uploader("Upload your resume", label_visibility="collapsed", type=["txt", "pdf", "docx"])
     
         parsed_result = None
@@ -254,6 +259,7 @@ def show_recruit_agent():
 def show_sales_agent():
         st.markdown("### 📈 Sales Agent Page")
         st.write("This page will help you manage sales-related tasks and information.")
+        ppt.ppt_call()
 
 # Page 2: Welcome
 def show_welcome_page():
@@ -263,7 +269,8 @@ def show_welcome_page():
     # Page Routing
     if page == "Welcome Page":
         st.markdown("### 👋 Welcome to LLM - Powered TalentStream Pro!")
-        st.write("This app parses resumes using LLMs and generates formatted documents")
+        st.markdown(
+        "<br> <br> A cutting-edge solution using advanced LLM technology to automate resume extraction and streamline document formatting for recruitment and sales support. <br> The system offers three predefined document formats, ensuring consistency and efficiency for agents. It also supports sales teams in creating one-slide PowerPoint presentations for RFPs. <br> In an upcoming enhancement, users will have the option to upload custom templates for automatic conversion of resumes. TalentStream Pro revolutionizes recruitment and sales processes, enhancing overall efficiency and consistency.",unsafe_allow_html=True)
     elif page == "Recruitment Agent":
         show_recruit_agent()
     elif page == "Sales Agent":
