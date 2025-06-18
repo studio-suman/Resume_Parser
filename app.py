@@ -327,7 +327,7 @@ if 'logged_in' not in st.session_state:
 if 'username' not in st.session_state:
        st.session_state.username = ""
 if 'users' not in st.session_state:
-       st.session_state.users = {"admin": "password123"}   # Default admin user
+       st.session_state.users = {"admin": "password123", "kk": "password123"}   # Default admin user
 if 'tokens' not in st.session_state:
        st.session_state.tokens = []
 
@@ -336,8 +336,6 @@ if st.session_state.logged_in:
     show_welcome_page()
 else:
     show_login_page()
-
-
 
 
 
