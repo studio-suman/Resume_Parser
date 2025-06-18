@@ -246,9 +246,9 @@ def option_three(parsed_result):
  
 # Image layout options
 images = [
-    ("Kallisti", r"D:\OneDrive - Wipro\Desktop\Trainng-Perl_Python\Python_Codes\LLM_USE Cases\Resume_Parser\New folder\\Layout1.png", option_one),
-    ("Phaedon", r"D:\OneDrive - Wipro\Desktop\Trainng-Perl_Python\Python_Codes\LLM_USE Cases\Resume_Parser\New folder\\Layout2.png", option_two),
-    ("Erasmos", r"D:\OneDrive - Wipro\Desktop\Trainng-Perl_Python\Python_Codes\LLM_USE Cases\Resume_Parser\New folder\\Layout3.png", option_three),
+    ("Kallisti", r"./New folder/Layout4.png", option_one),
+    #("Phaedon", r"./New folder/Layout2.png", option_two),
+    #("Erasmos", r"./New folder/Layout3.png", option_three),
 ]
 
 def ppt_call(): 

@@ -183,7 +183,6 @@ def option_three(parsed_result):
     generate_and_offer_download(parsed_result, layout3)  # Replace with layout3 if different
 
 
-
 # Image layout options
 images = [
     ("Kallisti", "./New folder/Layout1.png", option_one),
@@ -202,13 +201,14 @@ def show_recruit_agent():
         parsed_result = None
         
         if uploaded_file is not None:
-            with st.spinner("Reading and parsing resume..."):
+            with st.spinner(f"Processing {uploaded_file.name}..."):
                 resume_text = read_resume(uploaded_file)
                 if resume_text:
                     parsed_result = parse_resume(resume_text)
         
         if parsed_result:
             #st.json(parsed_result)
+            st.markdown(f"### Parsed Result for: {uploaded_file.name}") # type: ignore
             if isinstance(parsed_result, str):
                 try:
                     parsed_result = json.loads(parsed_result)
@@ -228,7 +228,7 @@ def show_recruit_agent():
                 st.stop()
         
             # Layout selection UI
-            st.markdown("<h8 style='font-size: 16px;color:#17365D;'>Choose a Layout:</h8>", unsafe_allow_html=True)
+            st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
             cols = st.columns(3, vertical_alignment="center")
             for i, (title, img_path, func) in enumerate(images):
                 with cols[i]:
@@ -271,7 +271,7 @@ def show_admin_page():
    if st.button("Back to Welcome Page"):
        st.session_state.page = "welcome"
 
-
+# Welcome page
 def show_welcome_page():
     
     st.sidebar.markdown("## 📋 Navigation")
