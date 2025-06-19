@@ -103,7 +103,7 @@ Resume text:
 # Initialize LLM
 llm = LlamaLLM()
  
-def read_resume(uploaded_file):
+def read_resume(uploaded_file):# -> Any | str | None:
     try:
         if uploaded_file.type == "text/plain":
             return uploaded_file.read().decode("utf-8")
@@ -326,9 +326,9 @@ def ppt_call():
     # Bulk download section
     if parsed_results:
         layout_options = {
-            "Kallisti (Layout 1)": layout5,
-            "Phaedon (Layout 2)": layout2,
-            "Erasmos (Layout 3)": layout3
+            "Kallisti (Layout 1)": layout5
+            # "Phaedon (Layout 2)": layout2,
+            # "Erasmos (Layout 3)": layout3
         }
         selected_layout_label = st.selectbox("📄 Select a layout for all resumes", list(layout_options.keys()))
         selected_layout_function = layout_options[selected_layout_label]

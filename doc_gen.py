@@ -282,7 +282,7 @@ def recruit_agent():
                 for i, (title, img_path, func) in enumerate(images):
                     with cols[i]:
                         st.image(img_path, use_container_width=False)
-                        if st.button(f"Layout: {title}", use_container_width=True):
+                        if st.button(f"Layout: {title}", use_container_width=True, disabled=True):
                             func(parsed_result)
         
         # Bulk download section

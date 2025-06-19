@@ -18,12 +18,9 @@ from langchain_ollama import OllamaEmbeddings # type: ignore
 parser = StrOutputParser()
 load_dotenv()
 
-
-
 class LlamaLLM(LLM):
     llm_url: ClassVar[str] = 'https://api.lab45.ai/v1.1/skills/completion/query'
-    
-    
+        
     @property
     def _llm_type(self) -> str:
         return "gpt-35-turbo-16k"

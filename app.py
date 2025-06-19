@@ -8,6 +8,32 @@ from doc_gen import recruit_agent
 import ppt
 from pydantic import BaseModel
 
+from dotenv import dotenv_values, set_key
+import os
+
+# Define the path to the .env file
+env_path = ".env"
+
+def set_env(token):
+    # Define the new or updated environment variables
+    new_env_vars = {
+        "TOKEN": f"Bearer {token}"
+    }
+
+    # Load existing environment variables from the .env file
+    if os.path.exists(env_path):
+        existing_env = dotenv_values(env_path)
+    else:
+        existing_env = {}
+
+    # Update or add new environment variables
+    for key, value in new_env_vars.items():
+        set_key(env_path, key, value)
+
+    # Confirm update
+    print(f".env file has been updated with the following variables:\n{new_env_vars}")
+
+
 # Configure logging to enabled
 logging.basicConfig(filename='resume_generator.log', level=logging.ERROR, format='%(asctime)s:%(levelname)s:%(message)s')
  
@@ -15,7 +41,6 @@ logging.basicConfig(filename='resume_generator.log', level=logging.ERROR, format
 class User(BaseModel):
     username: str
     password: str
-
 
 # Password hashing helpers
 def hash_password(password: str) -> str:
@@ -54,7 +79,8 @@ def show_admin_page():
    new_token = st.text_input("New Token", key="new_token")
    if st.button("Add Token"):
        if new_token:
-           st.session_state.tokens.append(new_token)
+           st.session_state.tokens.append("Bearer " + new_token)
+           set_env(new_token)
            st.success("Token added successfully.")
        else:
            st.error("Please enter a token.")
@@ -71,11 +97,15 @@ def show_welcome_page():
     if st.session_state.page == "Welcome":
         st.session_state.page = "Welcome"
     st.sidebar.markdown("## 📋 Navigation")
-    page = st.sidebar.radio("Go to", ["Welcome", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)","Admin"])
+    pages = ["Welcome", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)"]
+    if st.session_state.username == "admin":
+        pages.append("Admin")
+
+    page = st.sidebar.radio("Go to", pages)
     # Page Routing
     if page == "Welcome":
         st.session_state.page = "Welcome"
-        st.markdown("### 👋 Welcome to LLM - Powered TalentStream Pro!")
+        st.markdown("### 🤖 Welcome to LLM - Powered TalentStream Pro!")
         st.markdown(
         "<br> <br> A cutting-edge solution using advanced LLM technology to automate resume extraction and streamline document formatting for recruitment and sales support. <br> The system offers three predefined document formats, ensuring consistency and efficiency for agents. It also supports sales teams in creating one-slide PowerPoint presentations for RFPs. <br> In an upcoming enhancement, users will have the option to upload custom templates for automatic conversion of resumes. TalentStream Pro revolutionizes recruitment and sales processes, enhancing overall efficiency and consistency.",unsafe_allow_html=True)
     elif page == "Recruitment Agent":
