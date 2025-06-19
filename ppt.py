@@ -7,7 +7,7 @@ import pdfplumber
 import json
 import os
 import zipfile
-from generate_resume import layout3, layout1, layout2
+from doccreation import layout3, layout1, layout2
 from pptcreation import layout5
 from pydantic import BaseModel
 from typing import List
