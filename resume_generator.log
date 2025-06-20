@@ -13,3 +13,14 @@
 2025-06-19 23:38:15,168:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-19 23:43:10,462:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-19 23:46:41,010:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 11:24:38,790:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 11:57:31,843:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 12:05:02,896:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 12:05:59,684:ERROR:An error occurred while generating the resume: 'str' object has no attribute 'get'
+2025-06-20 12:13:11,259:ERROR:An error occurred while generating the resume: 'str' object has no attribute 'get'
+2025-06-20 12:17:16,334:ERROR:An error occurred while generating the resume: 'str' object has no attribute 'get'
+2025-06-20 12:42:17,704:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 12:42:18,144:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 12:42:48,703:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 12:43:21,822:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 13:02:02,390:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable

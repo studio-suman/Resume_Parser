@@ -8,7 +8,7 @@ import pdfplumber
 import json
 import os
 import zipfile
-import tempfile
+import pandas as pd
 from langchain.document_loaders import PyMuPDFLoader
 from doccreation import layout3, layout1, layout2 # docx templates for different layouts
 from pydantic import BaseModel
@@ -208,6 +208,50 @@ def generate_and_zip_resumes(parsed_results, layout_function, zip_file_name="res
         return None
  
 
+def pd2csv(parsed_results):
+    # Collect all flattened data
+            combined_data = []
+
+            for file_name, parsed_result in parsed_results:
+                flat_data = {
+                    "Name": parsed_result.get("Name", ""),
+                    "Email": parsed_result.get("Email", ""),
+                    "Phone": parsed_result.get("Phone", ""),
+                    "Linkedin": parsed_result.get("Linkedin", ""),
+                    "Summary": parsed_result.get("Summary", ""),
+                    "Skills": ", ".join(parsed_result.get("Skills", [])),
+                    "Certifications": ", ".join(
+                        [str(cert) for cert in parsed_result.get("Certifications", []) if cert]
+                            if isinstance(parsed_result.get("Certifications", []), list)
+                            else [str(parsed_result.get("Certifications", ""))]
+                        ),
+                    "Experience": "; ".join(
+                        [f"{exp.get('Title', '')} at {exp.get('Company', '')} ({exp.get('Duration', '')})"
+                            for exp in parsed_result.get("Experience", []) if isinstance(exp, dict)]
+                        ),
+                    "Education": "; ".join(
+                        [f"{edu.get('Degree', '')} from {edu.get('Institution', '')} ({edu.get('Duration', '')})"
+                            for edu in parsed_result.get("Education", [])
+                                if isinstance(edu, dict)]
+                        ) if isinstance(parsed_result.get("Education"), list) else str(parsed_result.get("Education", ""))
+
+                }
+                combined_data.append(flat_data)
+
+            # Create a single DataFrame
+            combined_df = pd.DataFrame(combined_data)
+
+            # Display the combined DataFrame
+            st.markdown("## 📊 Parsed Data Table")
+            st.dataframe(combined_df, use_container_width=True)
+            csv = combined_df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="⬇️ Download as CSV",
+                data=csv,
+                file_name="Consolidated_Resumes.csv",
+                mime="text/csv"
+            )
+
 # Image layout options
 images = [
     ("Kallisti", "./New folder/Layout1.png", option_one),
@@ -279,7 +323,8 @@ def recruit_agent():
                 if 'Name' not in parsed_result:
                     st.error("The 'Name' field is missing in the parsed result.")
                     st.stop()
-            
+
+
         # Layout selection UI
         if parsed_results:
             st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
@@ -310,3 +355,4 @@ def recruit_agent():
                         file_name=os.path.basename(zip_file_path),
                         mime="application/zip"
                     )
+        return parsed_results

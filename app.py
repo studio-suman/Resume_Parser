@@ -4,7 +4,7 @@ import streamlit as st
 import logging
 
 import bcrypt
-from doc_gen import recruit_agent
+from doc_gen import recruit_agent, pd2csv
 import ppt
 from pydantic import BaseModel
 
@@ -53,8 +53,8 @@ user = User(username="admin", password="password123")
 
 # Recruit Agent
 def show_recruit_agent():
-        recruit_agent()
-
+        parsed_result = recruit_agent()
+        st.session_state.resumes.append(parsed_result)
 # Sales Agent
 def show_sales_agent():
         st.markdown("### 📈 Sales Agent Page")
@@ -97,27 +97,44 @@ def show_welcome_page():
     if st.session_state.page == "Welcome":
         st.session_state.page = "Welcome"
     st.sidebar.markdown("## 📋 Navigation")
-    pages = ["Welcome", "Recruitment Agent", "Sales Agent", "Build Your Resume(WIP)"]
+    pages = ["Welcome", "Recruitment Agent", "Sales Agent","CV-2-CSV", "Build Your Resume(WIP)"]
     if st.session_state.username == "admin":
         pages.append("Admin")
 
     page = st.sidebar.radio("Go to", pages)
     # Page Routing
-    if page == "Welcome":
-        st.session_state.page = "Welcome"
-        st.markdown("### 🤖 Welcome to LLM - Powered TalentStream Pro!")
-        st.markdown(
-        "<br> <br> A cutting-edge solution using advanced LLM technology to automate resume extraction and streamline document formatting for recruitment and sales support. <br> The system offers three predefined document formats, ensuring consistency and efficiency for agents. It also supports sales teams in creating one-slide PowerPoint presentations for RFPs. <br> In an upcoming enhancement, users will have the option to upload custom templates for automatic conversion of resumes. TalentStream Pro revolutionizes recruitment and sales processes, enhancing overall efficiency and consistency.",unsafe_allow_html=True)
-    elif page == "Recruitment Agent":
-        show_recruit_agent()
-    elif page == "Sales Agent":
-        show_sales_agent()
-    elif page == "Build Your Resume(WIP)":
-        st.markdown("### 📝 Build Your Resume")
-        st.write("This feature will allow you to create a resume from scratch.")
-    elif page == "Admin":
-        st.session_state.page = "Admin"
-        show_admin_page()
+    # Placeholder container for clean rendering
+    content = st.empty()
+    with content.container():
+        if page == "Welcome":
+            st.session_state.page = "Welcome"
+            st.markdown("### 🤖 Welcome to LLM - Powered TalentStream Pro!")
+            st.markdown(
+            "<br> <br> A cutting-edge solution using advanced LLM technology to automate resume extraction and streamline document formatting for recruitment and sales support. <br> The system offers three predefined document formats, ensuring consistency and efficiency for agents. It also supports sales teams in creating one-slide PowerPoint presentations for RFPs. <br> In an upcoming enhancement, users will have the option to upload custom templates for automatic conversion of resumes. TalentStream Pro revolutionizes recruitment and sales processes, enhancing overall efficiency and consistency.",unsafe_allow_html=True)
+        elif page == "Recruitment Agent":
+            show_recruit_agent()
+        elif page == "Sales Agent":
+            show_sales_agent()
+        elif page == "Build Your Resume(WIP)":
+            st.markdown("### 📝 Build Your Resume")
+            st.markdown("🛠️ Work in Progress\n"
+                        "We're Building Something Great!\n<br> <br>"
+                        "This page is currently under construction as we work hard to bring you new features, improvements, and a better experience. Here's what you can expect soon:\n<br> <br>"
+                        "Feature: Users can upload custom templates for resume conversion\n<br>"
+                        "LLM technology will ensure conversion to the required format based on the uploaded custom template\n<br> <br>"
+                        "Benefits:\n<br>"
+                        "Enhanced customization for users\n<br>"
+                        "Further streamlining of resume handling and conversion process", unsafe_allow_html=True)
+        elif page == "CV-2-CSV":
+            st.session_state.page = "CV-2-CSV"
+            st.markdown("### 📄 Convert CV to CSV")
+            st.write("This feature will allow you to convert your CV into a CSV format.")
+            parsed_results = st.session_state.resumes[-1] if st.session_state.resumes else None
+            if parsed_results:
+                pd2csv(parsed_results)
+        elif page == "Admin":
+            st.session_state.page = "Admin"
+            show_admin_page()
     
     #st.sidebar.info("Use this panel to navigate or view instructions.")
     st.sidebar.markdown("### 🔍 Instructions")
@@ -168,6 +185,9 @@ if 'tokens' not in st.session_state:
 
 if "page" not in st.session_state:
        st.session_state.page = "Welcome"
+
+if 'resumes' not in st.session_state:
+       st.session_state.resumes = []
 
 
 # Display appropriate page
