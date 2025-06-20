@@ -246,7 +246,7 @@ def option_three(parsed_result):
  
 # Image layout options
 images = [
-    ("Kallisti", r"./New folder/Layout4.png", option_one),
+    ("Kallisti", r"./New folder/Layout4.png", option_one)
     #("Phaedon", r"./New folder/Layout2.png", option_two),
     #("Erasmos", r"./New folder/Layout3.png", option_three),
 ]
@@ -323,7 +323,7 @@ def ppt_call():
     # Layout selection UI
     if parsed_results:
         st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-        cols = st.columns(3, vertical_alignment="center")
+        cols = st.columns(3, vertical_alignment="center",border=False)
         for i, (title, img_path, func) in enumerate(images):
             with cols[i]:
                 st.image(img_path, use_container_width=False)

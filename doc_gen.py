@@ -243,6 +243,8 @@ def pd2csv(parsed_results):
             # Display the combined DataFrame
             st.markdown("## 📊 Parsed Data Table")
             st.dataframe(combined_df, use_container_width=True, hide_index=True)
+            #assert combined_df is not None, "Combined DataFrame is None"
+            #st.markdown(combined_df.to_html(index=False, escape=False), unsafe_allow_html=True)
             csv = combined_df.to_csv(index=False).encode('utf-8')
             st.download_button(
                 label="⬇️ Download as CSV",
@@ -334,7 +336,7 @@ def recruit_agent():
         # Layout selection UI
         if parsed_results:
             st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-            cols = st.columns(3, vertical_alignment="center")
+            cols = st.columns(3, vertical_alignment="center",border=True)
             for i, (title, img_path, func) in enumerate(images):
                 with cols[i]:
                     st.image(img_path, use_container_width=False)

@@ -24,3 +24,4 @@
 2025-06-20 12:42:48,703:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-20 12:43:21,822:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-20 13:02:02,390:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-20 19:28:49,671:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)
