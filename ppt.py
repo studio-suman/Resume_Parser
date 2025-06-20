@@ -263,27 +263,34 @@ def ppt_call():
     error_logs = []
     
     if uploaded_files:
-        for uploaded_file in uploaded_files:
-            with st.spinner(f"Processing {uploaded_file.name}..."):
-                try:
-                    resume_text = read_resume(uploaded_file)
-                    if not resume_text:
-                        raise ValueError("Empty or unreadable resume text.")
-    
-                    parsed_result = parse_resume(resume_text)
-                    if not parsed_result:
-                        raise ValueError("Parsing returned no result.")
-    
-                    parsed_results.append((uploaded_file.name, parsed_result))
-                except Exception as e:
-                    error_logs.append((uploaded_file.name, str(e)))
-    
-    
-    # Display error summary
-    if error_logs:
-        st.markdown("## ⚠️ Error Summary")
-        for filename, error in error_logs:
-            st.error(f"❌ {filename}: {error}")
+            progress_bar = st.progress(0)
+            total_files = len(uploaded_files)
+        
+            for idx, uploaded_file in enumerate(uploaded_files):
+                with st.spinner(f"Processing {uploaded_file.name}..."):
+                    try:
+                        resume_text = read_resume(uploaded_file)
+                        if not resume_text:
+                            raise ValueError("Empty or unreadable resume text.")
+        
+                        parsed_result = parse_resume(resume_text)
+                        if not parsed_result:
+                            raise ValueError("Parsing returned no result.")
+        
+                        parsed_results.append((uploaded_file.name, parsed_result))
+                    except Exception as e:
+                        error_logs.append((uploaded_file.name, str(e)))
+        
+                # Update progress bar
+                progress_bar.progress((idx + 1) / total_files)
+        
+            progress_bar.empty()  # Remove the progress bar after completion
+        
+            # Display error summary
+            if error_logs:
+                st.markdown("## ⚠️ Error Summary")
+                for filename, error in error_logs:
+                    st.error(f"❌ {filename}: {error}")
     
     # if uploaded_file is not None:
     #     with st.spinner("Reading and parsing resume..."):
@@ -295,7 +302,7 @@ def ppt_call():
  
     if parsed_results:
         for file_name, parsed_result in parsed_results:
-            st.markdown(f"### Parsed Result for: {file_name}")
+            #st.markdown(f"### Parsed Result for: {file_name}")
             #st.json(parsed_result)
     
             if isinstance(parsed_result, str):

@@ -9,7 +9,6 @@ import json
 import os
 import zipfile
 import pandas as pd
-from langchain.document_loaders import PyMuPDFLoader
 from doccreation import layout3, layout1, layout2 # docx templates for different layouts
 from pydantic import BaseModel
 from typing import List
@@ -273,7 +272,10 @@ def recruit_agent():
         error_logs = []
         
         if uploaded_files:
-            for uploaded_file in uploaded_files:
+            progress_bar = st.progress(0)
+            total_files = len(uploaded_files)
+        
+            for idx, uploaded_file in enumerate(uploaded_files):
                 with st.spinner(f"Processing {uploaded_file.name}..."):
                     try:
                         resume_text = read_resume(uploaded_file)
@@ -288,6 +290,10 @@ def recruit_agent():
                     except Exception as e:
                         error_logs.append((uploaded_file.name, str(e)))
         
+                # Update progress bar
+                progress_bar.progress((idx + 1) / total_files)
+        
+            progress_bar.empty()  # Remove the progress bar after completion
         
         # Display error summary
         if error_logs:
@@ -306,7 +312,7 @@ def recruit_agent():
 
         if parsed_results:
             for file_name, parsed_result in parsed_results:
-                st.markdown(f"### Parsed Result for: {file_name}")
+                #st.markdown(f"### Parsed Result for: {file_name}")
                 #st.json(parsed_result)
         
                 if isinstance(parsed_result, str):

@@ -57,7 +57,7 @@ def show_recruit_agent():
         st.session_state.resumes.append(parsed_result)
 # Sales Agent
 def show_sales_agent():
-        st.markdown("### 📈 Sales Agent Page")
+        st.markdown("### 📈 Sales Agent")
         st.write("Generate a one-slide PowerPoint presentation for the given profile.")
         parsed_result = ppt.ppt_call()
         st.session_state.resumes.append(parsed_result)
@@ -189,7 +189,6 @@ if "page" not in st.session_state:
 
 if 'resumes' not in st.session_state:
        st.session_state.resumes = []
-
 
 # Display appropriate page
 if st.session_state.logged_in:
