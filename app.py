@@ -158,7 +158,9 @@ if 'users' not in st.session_state:
     st.session_state.users = {
         "admin": hash_password("password123"),
         "krishnakanth": hash_password("password123"),
-        "manish": hash_password("password123")
+        "manish": hash_password("password123"),
+        "amar": hash_password("password123"),
+        "anand": hash_password("password123")
     }
 
 if 'tokens' not in st.session_state:

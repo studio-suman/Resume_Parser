@@ -3,6 +3,7 @@
 import streamlit as st
 from docx import Document
 import logging
+import random
 import pdfplumber
 import json
 import os
@@ -114,7 +115,10 @@ def parse_resume(resume_text):
         formatted_prompt = prompt_template.format(resume_text=summarised_text)
         parsed_response = llm._call(prompt=formatted_prompt, user="user")
         #st.write(parsed_resume)
- 
+
+        if isinstance(parsed_response, tuple):
+            parsed_response = parsed_response[0]
+
         if isinstance(parsed_response, dict) and "data" in parsed_response and "content" in parsed_response["data"]: # type: ignore
             parsed_text = parsed_response["data"]["content"] # type: ignore
         else:
@@ -213,7 +217,7 @@ images = [
 
 # Recruit Agent
 def recruit_agent():
-        st.markdown("### 📄 Recruitment Agent")
+        st.markdown("### 👥 Recruitment Agent")
         st.write("Generate a structured profile using the selected layout for a given profile.")
         #st.markdown("<h1 style='font-size: 30px;'>📄 Recruitment Agent</h1>", unsafe_allow_html=True)
         st.markdown("<h8 style='font-size: 16px;'>Upload your resume</h8>", unsafe_allow_html=True)
@@ -276,14 +280,14 @@ def recruit_agent():
                     st.error("The 'Name' field is missing in the parsed result.")
                     st.stop()
             
-                # Layout selection UI
-                st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-                cols = st.columns(3, vertical_alignment="center")
-                for i, (title, img_path, func) in enumerate(images):
-                    with cols[i]:
-                        st.image(img_path, use_container_width=False)
-                        if st.button(f"Layout: {title}", use_container_width=True, disabled=True):
-                            func(parsed_result)
+        # Layout selection UI
+        st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
+        cols = st.columns(3, vertical_alignment="center")
+        for i, (title, img_path, func) in enumerate(images):
+            with cols[i]:
+                st.image(img_path, use_container_width=False)
+                if st.button(f"Layout: {title}", use_container_width=True, disabled=True): #key=f"{random.randint(0, 10000)}"):
+                    print("") 
         
         # Bulk download section
         if parsed_results:

@@ -9,3 +9,7 @@
 2025-06-18 09:28:47,324:ERROR:Error parsing resume: 401 Client Error: UNAUTHORIZED for url: https://api.lab45.ai/v1.1/skills/completion/query
 2025-06-18 16:47:48,629:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)
 2025-06-18 16:48:21,698:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)
+2025-06-19 22:50:08,061:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-19 23:38:15,168:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-19 23:43:10,462:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
+2025-06-19 23:46:41,010:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
