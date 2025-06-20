@@ -59,7 +59,8 @@ def show_recruit_agent():
 def show_sales_agent():
         st.markdown("### 📈 Sales Agent Page")
         st.write("Generate a one-slide PowerPoint presentation for the given profile.")
-        ppt.ppt_call()
+        parsed_result = ppt.ppt_call()
+        st.session_state.resumes.append(parsed_result)
 
 # Admin Page
 def show_admin_page():

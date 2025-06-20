@@ -345,3 +345,4 @@ def ppt_call():
                     file_name=os.path.basename(zip_file_path),
                     mime="application/zip"
                 )
+    return parsed_results
