@@ -132,7 +132,7 @@ def layout1(parsed_result, path):
  
         # Save
         safe_name = re.sub(r'[\\/*?:"<>|]', "", data.get('Name', 'Unnamed'))
-        filename = f"formatted_resume-{safe_name}.docx"
+        filename = f"Formatted_Resume-{safe_name}.docx"
         full_path = os.path.join(path, filename)
         doc.save(full_path)
  
@@ -238,7 +238,7 @@ def layout2(parsed_result, path):
  
         # Save
         safe_name = re.sub(r'[\\/*?:"<>|]', "", data.get('Name', 'Unnamed'))
-        filename = f"formatted_resume_layout2-{safe_name}.docx"
+        filename = f"Formatted_Resume_-{safe_name}.docx"
         full_path = os.path.join(path, filename)
         doc.save(full_path)
  
@@ -341,7 +341,7 @@ def layout4(parsed_result, path):
  
     # Save
         safe_name = re.sub(r'[\\/*?:"<>|]', "", data.get('Name', 'Unnamed'))
-        filename = f"formatted_resume-{safe_name}.docx"
+        filename = f"Formatted_Resume-{safe_name}.docx"
         full_path = os.path.join(path, filename)
         doc.save(full_path)
         return full_path
@@ -455,7 +455,7 @@ def layout3(parsed_result, path):
  
     # Save
         safe_name = re.sub(r'[\\/*?:"<>|]', "", data.get('Name', 'Unnamed'))
-        filename = f"formatted_resume-{safe_name}.docx"
+        filename = f"Formatted_Resume-{safe_name}.docx"
         full_path = os.path.join(path, filename)
         doc.save(full_path)
         return full_path

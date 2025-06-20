@@ -353,7 +353,7 @@ def layout5(parsed_result, path, image_path=None):
  
         # Save
         safe_name = re.sub(r'[\\/*?:"<>|]', "", data.get('Name', 'Unnamed'))
-        filename = f"formatted_resume-{safe_name}.pptx"
+        filename = f"Formatted_Resume-{safe_name}.pptx"
         full_path = os.path.join(path, filename)
         prs.save(full_path)
         return full_path
