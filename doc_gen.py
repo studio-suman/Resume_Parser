@@ -242,7 +242,7 @@ def pd2csv(parsed_results):
 
             # Display the combined DataFrame
             st.markdown("## 📊 Parsed Data Table")
-            st.dataframe(combined_df, use_container_width=True)
+            st.dataframe(combined_df, use_container_width=True, hide_index=True)
             csv = combined_df.to_csv(index=False).encode('utf-8')
             st.download_button(
                 label="⬇️ Download as CSV",
