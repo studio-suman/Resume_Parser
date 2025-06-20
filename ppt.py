@@ -293,7 +293,6 @@ def ppt_call():
     
     # Helper function to generate and offer download
  
-
     if parsed_results:
         for file_name, parsed_result in parsed_results:
             st.markdown(f"### Parsed Result for: {file_name}")
@@ -315,14 +314,15 @@ def ppt_call():
                 st.stop()
         
     # Layout selection UI
-    st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-    cols = st.columns(3, vertical_alignment="center")
-    for i, (title, img_path, func) in enumerate(images):
-        with cols[i]:
-            st.image(img_path, use_container_width=False)
-            if st.button(f"Layout: {title}", use_container_width=True,disabled=True):
-                #func(parsed_result)
-                print("")
+    if parsed_results:
+        st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
+        cols = st.columns(3, vertical_alignment="center")
+        for i, (title, img_path, func) in enumerate(images):
+            with cols[i]:
+                st.image(img_path, use_container_width=False)
+                if st.button(f"Layout: {title}", use_container_width=True,disabled=True):
+                    #func(parsed_result)
+                    print("")
                     
     
     # Bulk download section

@@ -281,13 +281,14 @@ def recruit_agent():
                     st.stop()
             
         # Layout selection UI
-        st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
-        cols = st.columns(3, vertical_alignment="center")
-        for i, (title, img_path, func) in enumerate(images):
-            with cols[i]:
-                st.image(img_path, use_container_width=False)
-                if st.button(f"Layout: {title}", use_container_width=True, disabled=True): #key=f"{random.randint(0, 10000)}"):
-                    print("") 
+        if parsed_results:
+            st.markdown("<h8 style='font-size: 16px;'>Choose a Layout:</h8>", unsafe_allow_html=True)
+            cols = st.columns(3, vertical_alignment="center")
+            for i, (title, img_path, func) in enumerate(images):
+                with cols[i]:
+                    st.image(img_path, use_container_width=False)
+                    if st.button(f"Layout: {title}", use_container_width=True, disabled=True): #key=f"{random.randint(0, 10000)}"):
+                        print("") 
         
         # Bulk download section
         if parsed_results:
