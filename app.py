@@ -150,8 +150,8 @@ def show_welcome_page():
 def show_login_page():
     col1, col2, col3 = st.columns([1, 2, 1])  # Center the input box
 
-    with col2:
-        st.markdown("#### Welcome to TalentStream Pro")
+    with col2.container(border=True):
+        st.markdown("##### Welcome to TalentStream Pro")  # Reverting back to original text
         user_name = st.text_input("Username", key="user_name")
         pass_word = st.text_input("Password", type="password", key="pass_word")
 
