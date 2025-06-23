@@ -113,7 +113,28 @@ def parse_resume(resume_text):
         )
         formatted_prompt = prompt_template.format(resume_text=summarised_text)
         parsed_response = llm._call(prompt=formatted_prompt, user="user")
-        #st.write(parsed_resume)
+        #st.write(parsed_response)
+
+        # Self Correcting Prompt ################################
+
+        prompt_temp = "Kindly provide summary of profile, ensuring to include full name, email address, phone number, only single list of technical skills without categorizing, details of business capabilities, an overview of functional capabilities and complete professional experience along with roles and responsibilities if any,special notes read the entire profile before summarising as there can be multiple prifile formats emmeded one below another, Read profile till the end and the summarise"
+
+        prompt_template2 = PromptTemplate(
+            input_variables=["parsed_response","prompt_temp"],
+            template="""
+            Please process the following parsed response, ensure it is correct as per following instructions {prompt_temp} and rate the relevance in match with {parsed_response}, provide rating from 1 to 10 and why the rating is provided:
+            """
+        )
+
+        try:
+            parsed_response2 = llm._call(prompt_template2.format(parsed_response=parsed_response, prompt_temp=prompt_temp), user="user")
+            #st.write(parsed_response2)
+        except Exception as e:
+            logging.error(f"Error in additional processing: {e}")
+            st.error("Please try to upload again")
+            return None
+
+        # ####################################################################
 
         if isinstance(parsed_response, tuple):
             parsed_response = parsed_response[0]

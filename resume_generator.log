@@ -25,3 +25,5 @@
 2025-06-20 12:43:21,822:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-20 13:02:02,390:ERROR:An error occurred while generating the resume: 'NoneType' object is not iterable
 2025-06-20 19:28:49,671:ERROR:Error parsing resume: Expecting value: line 1 column 1 (char 0)
+2025-06-23 18:03:30,566:ERROR:Error parsing resume: cannot access local variable 'parsed_resume' where it is not associated with a value
+2025-06-23 18:04:05,498:ERROR:Error parsing resume: HTTPSConnectionPool(host='api.lab45.ai', port=443): Max retries exceeded with url: /v1.1/skills/completion/query (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
